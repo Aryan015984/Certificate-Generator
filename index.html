@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All-in-One Certificate System</title>
+<style>
+body {margin:0; font-family: Arial, sans-serif; background:linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); color:white; min-height:100vh;}
+
+section {display:none; padding:40px; min-height:100vh;}
+
+section:target {display:block;}
+
+body:not(:target) #loginPage {display:block;}
+
+
+/* Form styling */
+.form-box {
+  max-width:400px; margin:100px auto; background:rgba(255,255,255,0.1); padding:30px; border-radius:20px; text-align:center; backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.2);
+}
+input, select {width:100%; margin:10px 0; padding:12px; border-radius:10px; border:2px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.15); color:white; font-size:14px;}
+input::placeholder {color:rgba(255,255,255,0.7);}
+select {color:white; font-weight:bold; background:rgba(255,255,255,0.15);}
+button, a.btn {display:block; margin-top:12px; padding:12px; background:linear-gradient(90deg,#00d4ff,#0099ff); color:white; text-decoration:none; font-weight:bold; border-radius:12px; text-align:center; cursor:pointer; border:none; transition:all 0.3s ease;}
+button:hover, a.btn:hover {background:linear-gradient(90deg,#0099ff,#00d4ff); transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,212,255,0.4);}
+.form-box:hover {box-shadow:0 0 40px rgba(240,147,251,0.5); transition:0.3s;}
+
+/* Certificate styling */
+#certificate {
+  width:900px; margin:50px auto; padding:60px; background:linear-gradient(135deg,#ffecd2,#fcb69f,#ff9a76);
+  border-radius:24px; text-align:center; color:#333; position:relative; box-shadow:0 10px 40px rgba(0,0,0,0.25); overflow:hidden;
+  border:8px double #ff6b35;
+}
+#certificate::before, #certificate::after {
+  content:""; position:absolute; width:120px; height:120px; background:url('https://img.freepik.com/free-vector/award-ribbon_24908-54794.jpg?semt=ais_hybrid&w=740&q=80') no-repeat center/contain;
+}
+#certificate::before {top:-20px; left:-20px; transform:rotate(-20deg);}
+#certificate::after {bottom:-20px; right:-20px; transform:rotate(30deg);}
+#certificate h1 {font-size:42px; color:#ff6b35; text-shadow:2px 2px #fff1cc;}
+#certificate p {font-size:20px; margin:15px 0; color:#3d2817;}
+#certName {font-size:42px; font-weight:900; margin:20px 0; border-bottom:3px dashed #ff6b35; padding-bottom:8px; color:#1a1a1a;}
+#certCourse {font-weight:900; color:#d2691e; font-size:28px;}
+.seal {
+  position:absolute; bottom:40px; right:40px; width:120px; height:120px; border-radius:50%;
+  background:conic-gradient(from 180deg,#ff6b35,#f7931e,#ff6b35); display:flex;
+  align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  font-weight:800; color:#fff; font-size:12px; text-align:center; padding:10px;
+}
+
+/* Courses page */
+.course-box {max-width:900px; margin:50px auto; background:rgba(255,255,255,0.1); padding:30px; border-radius:16px; backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.2);}
+.course-box h2 {color:#00d4ff; text-align:center; font-size:28px;}
+.course {margin:12px 0; padding:15px; background:rgba(255,255,255,0.08); border-radius:12px; border-left:4px solid #00d4ff; transition:all 0.3s ease;}
+.course a {color:#fff; text-decoration:none; font-weight:bold;}
+.course a:hover {color:#00d4ff; text-shadow:0 0 10px rgba(0,212,255,0.5);}
+.course:hover {background:rgba(0,212,255,0.1); transform:translateX(5px);}
+
+/* Save info popup simulation */
+.save-popup {
+  display:flex; justify-content:center; margin-top:10px; gap:12px;
+}
+.save-popup a {background:linear-gradient(90deg,#00d4ff,#0099ff); padding:10px 14px; border-radius:12px; color:white; text-decoration:none; font-weight:bold; transition:all 0.3s ease;}
+.save-popup a.no {background:linear-gradient(90deg,#f093fb,#667eea);}
+.save-popup a:hover {opacity:0.9; transform:translateY(-2px);}
+
+@media print {
+  body * {visibility:hidden;}
+  #certificate, #certificate * {visibility:visible;}
+  #certificate {position:absolute; top:0; left:0; width:100%; margin:0; box-shadow:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<section id="loginPage">
+  <div class="form-box">
+    <h2>Login</h2>
+    <form action="#saveInfo">
+      <label>Username</label>
+      <input 
+        id="loginUsername" 
+        type="text" 
+        placeholder="Enter username" 
+        pattern="[A-Za-z0-9]{3,15}" 
+        title="Username must be 3-15 characters, letters and numbers only" 
+        required
+      >
+
+      <label>Password</label>
+      <input 
+        id="loginPassword" 
+        type="password" 
+        placeholder="Enter password" 
+        pattern=".{5,20}" 
+        title="Password must be 5-20 characters" 
+        required
+      >
+
+      <button type="submit">Login</button>
+    </form>
+    
+    <a href="#signupPage" class="btn" style="background:linear-gradient(90deg,#22ffcc,#66ff88)">Create Account</a>
+  </div>
+</section>
+
+<!-- SIGNUP PAGE -->
+<section id="signupPage">
+  <div class="form-box">
+    <h2>Create Account</h2>
+    <form action="#loginPage">
+      <label>Username</label>
+      <input 
+        type="text" 
+        placeholder="Enter username" 
+        pattern="[A-Za-z0-9]{3,15}" 
+        title="Username must be 3-15 characters, letters and numbers only" 
+        required
+      >
+
+      <label>Password</label>
+      <input 
+        type="password" 
+        placeholder="Enter password" 
+        pattern=".{5,20}" 
+        title="Password must be 5-20 characters" 
+        required
+      >
+
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+</section>
+
+<!-- SAVE INFO POPUP -->
+<section id="saveInfo">
+  <div class="form-box">
+    <h2>Save Login Info?</h2>
+    <div class="save-popup">
+      <a href="#coursePage">Yes</a>
+      <a href="#coursePage" class="no">No</a>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES PAGE -->
+<section id="coursePage">
+  <div class="course-box">
+    <h2>Available Courses</h2>
+    <div class="course"><a href="https://www.youtube.com/results?search_query=html+css+course" target="_blank">HTML & CSS — Web Design Essentials</a></div>
+    <div class="course"><a href="https://www.youtube.com/results?search_query=javascript+course" target="_blank">JavaScript Essentials</a></div>
+    <div class="course"><a href="https://www.youtube.com/results?search_query=python+course" target="_blank">Python Programming</a></div>
+    <div class="course"><a href="https://www.youtube.com/results?search_query=c+programming+tutorial" target="_blank">C / C++ Fundamentals</a></div>
+    <div class="course"><a href="https://www.youtube.com/results?search_query=java+course" target="_blank">Java — Core Concepts</a></div>
+    <a href="#certPage" class="btn">Go to Certificate Generator</a>
+  </div>
+</section>
+
+<!-- CERTIFICATE GENERATOR PAGE -->
+<section id="certPage">
+  <div class="form-box" style="color:black;">
+    <h2>Certificate Generator</h2>
+    <label>Recipient Name</label>
+    <input id="recipientName" type="text" placeholder="Enter recipient name">
+    <label>Select Course</label>
+    <select id="courseSelect">
+      <option>HTML & CSS</option>
+      <option>JavaScript</option>
+      <option>Python</option>
+      <option>C / C++</option>
+      <option>Java</option>
+    </select>
+    <a href="#certificatePage" class="btn">Print Certificate</a>
+  </div>
+</section>
+
+<!-- PRINT CERTIFICATE PAGE -->
+<section id="certificatePage">
+  <div id="certificate">
+    <h1>Certificate of Completion</h1>
+    <p>This is proudly presented to</p>
+    <div id="certName">Recipient Name</div>
+    <p>For successfully completing the course:</p>
+    <div id="certCourse">Course Name</div>
+    <div class="seal">EXCELLENCE<br>AWARD</div>
+  </div>
+
+  <div style="text-align:center; margin-top:20px;">
+    <a href="#certificatePage" class="btn" onclick="window.print()">Print / Save Certificate</a>
+  </div>
+</section>
+
+<!-- Minimal JS to auto-fill certificate -->
+<script>
+document.querySelector('#certPage .btn').addEventListener('click', function() {
+  const name = document.getElementById('recipientName').value.trim();
+  const course = document.getElementById('courseSelect').value;
+  if(name) document.getElementById('certName').textContent = name;
+  if(course) document.getElementById('certCourse').textContent = course;
+});
+</script>
+
+</body>
+</html>
